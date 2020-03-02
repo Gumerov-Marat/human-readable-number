@@ -1,3 +1,85 @@
-module.exports = function toReadable (number) {
-  
+module.exports = function toReadable (num) {
+
+  const numbers = {
+      0: 'zero',
+      1: 'one',
+      2: 'two',
+      3: 'three',
+      4: 'four',
+      5: 'five',
+      6: 'six',
+      7: 'seven',
+      8: 'eight',
+      9: 'nine',
+      10: 'ten',
+      11: 'eleven',
+      12: 'twelve',
+      13: 'thirteen',
+      14: 'fourteen',
+      15: 'fifteen',
+      16: 'sixteen',
+      17: 'seventeen',
+      18: 'eighteen',
+      19: 'nineteen',
+      20: 'twenty',
+      30: 'thirty',
+      40: 'forty',
+      50: 'fifty',
+      60: 'sixty',
+      70: 'seventy',
+      80: 'eighty',
+      90: 'ninety',
+      100: 'one hundred'
+  }
+
+      const calculateDigit = (n) => {
+
+          let number = +n.join('')
+          let res = ''
+
+          n.filter(el => {
+              for (let [key, value] of Object.entries(numbers)) {
+                  if (el == key) {
+                      let digit = Math.floor(number / 10) * 10;
+                      for (let [key, val] of Object.entries(numbers)) {
+                          if (digit == key) {
+                              res = `${val} ${value}`
+                          };
+                      }
+                  }
+              }
+          })
+          return res;
+      }
+
+      for (let [key, value] of Object.entries(numbers)) {
+          if (key == num) {
+              result = value
+          } else if (key !== num && !numbers.hasOwnProperty(num)) {
+              let number = num.toString().split('');
+              if (number.length == 2) {
+                  let dozen = calculateDigit(number);
+                  result = dozen;
+              } else if (number.length == 3) {
+                  for (let [key, value] of Object.entries(numbers)) {
+                      let arrDozen = [number[1], number[2]];
+                      if (key == number[0] && !(num % 100)) {
+                          result = `${value} hundred`
+                      } else if (key == number[0] && number[1] != 0 && !numbers.hasOwnProperty(+arrDozen.join(''))) {
+                          let dozen = calculateDigit(arrDozen);
+                          result = `${value} hundred ${dozen}`
+                      } else if (key == number[0] && arrDozen !== ['0', '0']) {
+                          for (let [k, v] of Object.entries(numbers)) {
+                              if (k == +arrDozen.join('')) {
+                                  result = `${value} hundred ${v}`
+                              }
+
+                          }
+
+                      }
+                  }
+              }
+          }
+      }
+      return result.trim()
 }
